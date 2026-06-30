@@ -6,12 +6,28 @@ const server = app.listen(env.port, () => {
   console.log(`API listening on http://localhost:${env.port}`);
 });
 
+let isShuttingDown = false;
+
 async function shutdown(signal: string) {
+  if (isShuttingDown) {
+    return;
+  }
+
+  isShuttingDown = true;
   console.log(`${signal} received, shutting down`);
 
-  server.close(async () => {
-    await db.destroy();
-    process.exit(0);
+  server.close(async (error) => {
+    if (error) {
+      console.error('Failed to close HTTP server', error);
+    }
+
+    try {
+      await db.destroy();
+      process.exit(error ? 1 : 0);
+    } catch (dbError) {
+      console.error('Failed to close database connection', dbError);
+      process.exit(1);
+    }
   });
 }
 
