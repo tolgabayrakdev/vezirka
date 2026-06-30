@@ -3,6 +3,8 @@ import express, { ErrorRequestHandler } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { env } from './config/env.js';
+import { HttpException } from './exceptions/http.exception.js';
+import { fruitRouter } from './routes/fruit.routes.js';
 import { healthRouter } from './routes/health.routes.js';
 
 export const app = express();
@@ -17,13 +19,14 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/health', healthRouter);
+app.use('/fruits', fruitRouter);
 
 app.use((_req, res) => {
   res.status(404).json({ message: 'Not found' });
 });
 
 const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
-  const statusCode = error.statusCode ?? 500;
+  const statusCode = error instanceof HttpException ? error.statusCode : 500;
 
   res.status(statusCode).json({
     message: statusCode === 500 ? 'Internal server error' : error.message
