@@ -16,6 +16,5 @@ export const updateFruitSchema = createFruitSchema.partial().refine(
   'At least one field is required'
 );
 
-export type FruitParams = z.infer<typeof fruitParamsSchema>;
 export type CreateFruitBody = z.infer<typeof createFruitSchema>;
 export type UpdateFruitBody = z.infer<typeof updateFruitSchema>;

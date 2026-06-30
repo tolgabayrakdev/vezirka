@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { env } from './config/env.js';
 import { HttpException } from './exceptions/http.exception.js';
-import { fruitRouter } from './routes/fruit.routes.js';
+import { apiV1Router } from './routes/index.js';
 import { healthRouter } from './routes/health.routes.js';
 
 export const app = express();
@@ -19,7 +19,7 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/health', healthRouter);
-app.use('/fruits', fruitRouter);
+app.use('/api/v1', apiV1Router);
 
 app.use((_req, res) => {
   res.status(404).json({ message: 'Not found' });

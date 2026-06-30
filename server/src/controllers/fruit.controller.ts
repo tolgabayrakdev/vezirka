@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { CreateFruitBody, FruitParams, UpdateFruitBody } from '../schemas/fruit.schemas.js';
+import type { CreateFruitBody, UpdateFruitBody } from '../schemas/fruit.schemas.js';
 import { FruitService } from '../services/fruit.service.js';
 
 export class FruitController {
@@ -12,8 +12,7 @@ export class FruitController {
   };
 
   getFruit = async (req: Request, res: Response): Promise<void> => {
-    const params = req.params as unknown as FruitParams;
-    const fruit = await this.fruitService.getFruitById(params.id);
+    const fruit = await this.fruitService.getFruitById(Number(req.params.id));
 
     res.json(fruit);
   };
@@ -26,17 +25,14 @@ export class FruitController {
   };
 
   updateFruit = async (req: Request, res: Response): Promise<void> => {
-    const params = req.params as unknown as FruitParams;
     const body = req.body as UpdateFruitBody;
-    const fruit = await this.fruitService.updateFruit(params.id, body);
+    const fruit = await this.fruitService.updateFruit(Number(req.params.id), body);
 
     res.json(fruit);
   };
 
   deleteFruit = async (req: Request, res: Response): Promise<void> => {
-    const params = req.params as unknown as FruitParams;
-
-    await this.fruitService.deleteFruit(params.id);
+    await this.fruitService.deleteFruit(Number(req.params.id));
 
     res.status(204).send();
   };
