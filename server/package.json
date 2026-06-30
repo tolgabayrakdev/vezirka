@@ -10,6 +10,9 @@
     "build": "tsc",
     "start": "node dist/src/index.js",
     "typecheck": "tsc --noEmit",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "check": "npm run typecheck && npm run lint",
     "knex": "knex --knexfile knexfile.ts",
     "migrate:make": "knex --knexfile knexfile.ts migrate:make -x ts",
     "migrate:latest": "knex --knexfile knexfile.ts migrate:latest",
@@ -36,6 +39,7 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.10.5",
     "@types/pg": "^8.11.10",
+    "oxlint": "^1.72.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
