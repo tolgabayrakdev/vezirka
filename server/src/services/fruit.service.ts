@@ -1,34 +1,11 @@
-import { db } from '../db/knex.js';
 import { NotFoundException } from '../exceptions/http.exception.js';
-
-export type Fruit = {
-  id: number;
-  name: string;
-  color: string | null;
-  price: number;
-  stock: number;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type CreateFruitInput = {
-  name: string;
-  color?: string | null;
-  price?: number;
-  stock?: number;
-};
-
-export type UpdateFruitInput = Partial<CreateFruitInput>;
-
-type FruitRow = {
-  id: number;
-  name: string;
-  color: string | null;
-  price: string | number;
-  stock: number;
-  created_at: Date;
-  updated_at: Date;
-};
+import { FruitRepository } from '../repositories/fruit.repository.js';
+import type {
+  CreateFruitInput,
+  Fruit,
+  FruitRow,
+  UpdateFruitInput
+} from '../types/fruit.types.js';
 
 function mapFruit(row: FruitRow): Fruit {
   return {
@@ -43,14 +20,16 @@ function mapFruit(row: FruitRow): Fruit {
 }
 
 export class FruitService {
+  constructor(private readonly fruitRepository: FruitRepository) {}
+
   async listFruits(): Promise<Fruit[]> {
-    const rows = await db<FruitRow>('fruits').select('*').orderBy('id', 'asc');
+    const rows = await this.fruitRepository.findAll();
 
     return rows.map(mapFruit);
   }
 
   async getFruitById(id: number): Promise<Fruit> {
-    const row = await db<FruitRow>('fruits').where({ id }).first();
+    const row = await this.fruitRepository.findById(id);
 
     if (!row) {
       throw new NotFoundException('Fruit not found');
@@ -60,26 +39,13 @@ export class FruitService {
   }
 
   async createFruit(input: CreateFruitInput): Promise<Fruit> {
-    const [row] = await db<FruitRow>('fruits')
-      .insert({
-        name: input.name,
-        color: input.color ?? null,
-        price: input.price ?? 0,
-        stock: input.stock ?? 0
-      })
-      .returning('*');
+    const row = await this.fruitRepository.create(input);
 
     return mapFruit(row);
   }
 
   async updateFruit(id: number, input: UpdateFruitInput): Promise<Fruit> {
-    const [row] = await db<FruitRow>('fruits')
-      .where({ id })
-      .update({
-        ...input,
-        updated_at: db.fn.now()
-      })
-      .returning('*');
+    const row = await this.fruitRepository.update(id, input);
 
     if (!row) {
       throw new NotFoundException('Fruit not found');
@@ -89,9 +55,9 @@ export class FruitService {
   }
 
   async deleteFruit(id: number): Promise<void> {
-    const deletedCount = await db<FruitRow>('fruits').where({ id }).delete();
+    const deleted = await this.fruitRepository.delete(id);
 
-    if (deletedCount === 0) {
+    if (!deleted) {
       throw new NotFoundException('Fruit not found');
     }
   }
