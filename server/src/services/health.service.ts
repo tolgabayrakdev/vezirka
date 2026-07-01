@@ -13,7 +13,7 @@ export class HealthService {
     return {
       status: 'ok',
       database: 'ok',
-      uptime: process.uptime()
+      uptime: process.uptime(),
     };
   }
 }

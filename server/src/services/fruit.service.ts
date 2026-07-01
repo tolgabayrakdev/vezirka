@@ -1,11 +1,6 @@
 import { NotFoundException } from '../exceptions/http.exception.js';
 import { FruitRepository } from '../repositories/fruit.repository.js';
-import type {
-  CreateFruitInput,
-  Fruit,
-  FruitRow,
-  UpdateFruitInput
-} from '../types/fruit.types.js';
+import type { CreateFruitInput, Fruit, FruitRow, UpdateFruitInput } from '../types/fruit.types.js';
 
 function mapFruit(row: FruitRow): Fruit {
   return {
@@ -15,7 +10,7 @@ function mapFruit(row: FruitRow): Fruit {
     price: Number(row.price),
     stock: row.stock,
     createdAt: row.created_at,
-    updatedAt: row.updated_at
+    updatedAt: row.updated_at,
   };
 }
 

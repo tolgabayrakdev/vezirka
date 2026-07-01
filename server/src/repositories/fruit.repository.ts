@@ -3,15 +3,7 @@ import type { CreateFruitInput, FruitRow, UpdateFruitInput } from '../types/frui
 
 const TABLE = 'fruits';
 
-const COLUMNS = [
-  'id',
-  'name',
-  'color',
-  'price',
-  'stock',
-  'created_at',
-  'updated_at'
-];
+const COLUMNS = ['id', 'name', 'color', 'price', 'stock', 'created_at', 'updated_at'];
 
 export class FruitRepository {
   async findAll(): Promise<FruitRow[]> {
@@ -32,7 +24,7 @@ export class FruitRepository {
         name: data.name,
         color: data.color ?? null,
         price: data.price ?? 0,
-        stock: data.stock ?? 0
+        stock: data.stock ?? 0,
       })
       .returning(COLUMNS);
 
@@ -44,7 +36,7 @@ export class FruitRepository {
       .where({ id })
       .update({
         ...data,
-        updated_at: db.fn.now()
+        updated_at: db.fn.now(),
       })
       .returning(COLUMNS);
 

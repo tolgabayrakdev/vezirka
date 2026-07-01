@@ -13,29 +13,29 @@ const config: Record<string, Knex.Config> = {
     connection,
     migrations: {
       directory: './database/migrations',
-      extension: 'ts'
+      extension: 'ts',
     },
     seeds: {
       directory: './database/seeds',
-      extension: 'ts'
-    }
+      extension: 'ts',
+    },
   },
   production: {
     client: 'pg',
     connection,
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
       directory: './dist/database/migrations',
-      extension: 'js'
+      extension: 'js',
     },
     seeds: {
       directory: './dist/database/seeds',
-      extension: 'js'
-    }
-  }
+      extension: 'js',
+    },
+  },
 };
 
 export default config[process.env.NODE_ENV ?? 'development'];

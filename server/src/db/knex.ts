@@ -6,6 +6,6 @@ export const db = knex({
   connection: env.databaseUrl,
   pool: {
     min: 0,
-    max: 10
-  }
+    max: 10,
+  },
 });

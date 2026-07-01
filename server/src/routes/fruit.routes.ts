@@ -3,7 +3,7 @@ import { fruitController } from '../container.js';
 import {
   createFruitSchema,
   fruitParamsSchema,
-  updateFruitSchema
+  updateFruitSchema,
 } from '../schemas/fruit.schemas.js';
 import { validateRequest } from '../middlewares/validate-request.middleware.js';
 
@@ -15,10 +15,10 @@ fruitRouter.post('/', validateRequest({ body: createFruitSchema }), fruitControl
 fruitRouter.patch(
   '/:id',
   validateRequest({ params: fruitParamsSchema, body: updateFruitSchema }),
-  fruitController.updateFruit
+  fruitController.updateFruit,
 );
 fruitRouter.delete(
   '/:id',
   validateRequest({ params: fruitParamsSchema }),
-  fruitController.deleteFruit
+  fruitController.deleteFruit,
 );

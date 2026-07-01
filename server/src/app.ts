@@ -29,7 +29,7 @@ const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   const statusCode = error instanceof HttpException ? error.statusCode : 500;
 
   res.status(statusCode).json({
-    message: statusCode === 500 ? 'Internal server error' : error.message
+    message: statusCode === 500 ? 'Internal server error' : error.message,
   });
 };
 

@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "check": "npm run typecheck && npm run lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run lint && npm run format:check",
     "knex": "knex --knexfile knexfile.ts",
     "migrate:make": "knex --knexfile knexfile.ts migrate:make -x ts",
     "migrate:latest": "knex --knexfile knexfile.ts migrate:latest",
@@ -40,6 +42,7 @@
     "@types/node": "^22.10.5",
     "@types/pg": "^8.11.10",
     "oxlint": "^1.72.0",
+    "prettier": "^3.9.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
